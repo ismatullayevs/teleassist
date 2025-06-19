@@ -15,7 +15,7 @@ router = APIRouter()
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
-@router.post("/chats", response_model=ChatOutDTO)
+@router.post("/chats", response_model=ChatOutDTO, status_code=201)
 async def create_chat(user: Annotated[User, Depends(get_current_active_user)], db: DbDep):
     """
     Endpoint to create a new chat for the user.
@@ -26,7 +26,7 @@ async def create_chat(user: Annotated[User, Depends(get_current_active_user)], d
     return chat
 
 
-@router.post("/generate", response_model=MessageOutDTO)
+@router.post("/generate", response_model=MessageOutDTO, status_code=201)
 async def generate_response(user: Annotated[User, Depends(get_current_active_user)],
                             message: MessageInDTO,
                             db: DbDep):

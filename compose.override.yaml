@@ -1,4 +1,14 @@
 services:
+  bot:
+    develop:
+      watch:
+        - action: sync
+          path: ./bot
+          target: /app
+        - action: rebuild
+          path: ./bot/pyproject.toml
+    restart: unless-stopped
+    command: sh -c "watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- uv run main.py"
   backend:
     ports:
       - 8000:80

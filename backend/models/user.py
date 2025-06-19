@@ -9,7 +9,7 @@ class User(Base):
     id: Mapped[intpk]
     telegram_id: Mapped[int] = mapped_column(unique=True, index=True)
     name: Mapped[str]
-    is_active: Mapped[bool] = mapped_column(default=True, index=True)
+    is_active: Mapped[bool] = mapped_column(default=False, index=True)
 
     chats: Mapped[list["Chat"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 

@@ -10,7 +10,7 @@ services:
     command: sh prestart.sh
 
   backend:
-    build: backend
+    build: ./backend
     restart: always
     depends_on:
       db:
@@ -20,7 +20,17 @@ services:
         condition: service_completed_successfully
     env_file:
       - .env
-  
+
+  bot:
+    build: ./bot
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+        restart: true
+    env_file:
+      - .env
+
   db:
     image: postgres:latest
     volumes:
@@ -35,5 +45,23 @@ services:
       start_period: 30s
       timeout: 10s
 
+  mongo:
+    image: mongo:latest
+    volumes:
+      - mongo_data:/data/db
+    env_file:
+      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ADMIN}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+    restart: always
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
 volumes:
   db_data:
+  mongo_data:
