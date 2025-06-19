@@ -8,5 +8,6 @@ dependencies = [
     "aiogram>=3.20.0.post0",
     "motor>=3.7.1",
     "pydantic-settings>=2.9.1",
+    "pymongo>=4.13.2",
     "watchdog[watchmedo]>=6.0.0",
 ]

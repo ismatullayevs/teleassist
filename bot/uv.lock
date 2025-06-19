@@ -107,6 +107,7 @@ dependencies = [
     { name = "aiogram" },
     { name = "motor" },
     { name = "pydantic-settings" },
+    { name = "pymongo" },
     { name = "watchdog", extra = ["watchmedo"] },
 ]
 
@@ -115,6 +116,7 @@ requires-dist = [
     { name = "aiogram", specifier = ">=3.20.0.post0" },
     { name = "motor", specifier = ">=3.7.1" },
     { name = "pydantic-settings", specifier = ">=2.9.1" },
+    { name = "pymongo", specifier = ">=4.13.2" },
     { name = "watchdog", extras = ["watchmedo"], specifier = ">=6.0.0" },
 ]
 
