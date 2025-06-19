@@ -8,6 +8,7 @@ from handlers import router
 import asyncio
 import logging
 import sys
+from middlewares import LoggingMiddleware
 
 
 async def main():
@@ -23,6 +24,7 @@ async def main():
 
     dp = Dispatcher(storage=mongo_storage)
     dp.include_router(router)
+    dp.update.outer_middleware(LoggingMiddleware())
 
     await dp.start_polling(bot)
 
