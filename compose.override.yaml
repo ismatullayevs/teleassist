@@ -25,3 +25,31 @@ services:
   db:
     ports:
       - 5432:5432
+
+  traefik:
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    labels: !override
+      - traefik.enable=true
+      - traefik.http.services.traefik-dashboard.loadbalancer.server.port=8080
+      - traefik.http.routers.traefik-dashboard-http.entrypoints=http
+      - traefik.http.routers.traefik-dashboard-http.rule=Host(`traefik.${DOMAIN}`)
+      - traefik.http.routers.traefik-dashboard-https.entrypoints=https
+      - traefik.http.routers.traefik-dashboard-https.rule=Host(`traefik.${DOMAIN}`)
+      - traefik.http.routers.traefik-dashboard-http.service=api@internal
+      - traefik.http.routers.traefik-dashboard-https.service=api@internal
+      - traefik.http.routers.traefik-dashboard-https.tls=true
+      - traefik.http.routers.traefik-dashboard-https.tls.certresolver=le
+      - traefik.http.middlewares.https-redirect.contenttype.autodetect=false
+      - traefik.http.middlewares.compress.compress=true
+    command: 
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.http.address=:80"
+      - "--entrypoints.https.address=:443"
+      - "--accesslog"
+      - "--api"
+      - "--log"
+      - "--log.level=DEBUG"
