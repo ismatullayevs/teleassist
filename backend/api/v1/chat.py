@@ -16,7 +16,9 @@ client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
 @router.post("/chats", response_model=ChatOutDTO, status_code=201)
-async def create_chat(user: Annotated[User, Depends(get_current_active_user)], db: DbDep):
+async def create_chat(
+    user: Annotated[User, Depends(get_current_active_user)], db: DbDep
+):
     """
     Endpoint to create a new chat for the user.
     """
@@ -27,9 +29,11 @@ async def create_chat(user: Annotated[User, Depends(get_current_active_user)], d
 
 
 @router.post("/generate", response_model=MessageOutDTO, status_code=201)
-async def generate_response(user: Annotated[User, Depends(get_current_active_user)],
-                            message: MessageInDTO,
-                            db: DbDep):
+async def generate_response(
+    user: Annotated[User, Depends(get_current_active_user)],
+    message: MessageInDTO,
+    db: DbDep,
+):
     """
     Endpoint to generate a response based on the user's message.
     """
@@ -54,8 +58,8 @@ async def generate_response(user: Annotated[User, Depends(get_current_active_use
         model="gpt-3.5-turbo",
         input=[
             *[{"role": msg.role.name, "content": msg.content} for msg in messages],
-            {"role": "user", "content": message.content}
-        ]
+            {"role": "user", "content": message.content},
+        ],
     )
     response_content = response.output_text
     current_time = datetime.now(timezone.utc)

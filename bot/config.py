@@ -5,9 +5,10 @@ class Settings(BaseSettings):
     """
     Configuration settings for the application.
     """
+
     BOT_TOKEN: str
     INTERNAL_TOKEN: str
-    
+
     MONGO_HOST: str
     MONGO_PORT: int
     MONGO_ADMIN: str

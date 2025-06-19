@@ -17,10 +17,7 @@ async def create_user(user_in: UserInDTO, db: DbDep, internal_token: VerifiedTok
     """
     Endpoint to create a new user.
     """
-    user = User(
-        telegram_id=user_in.telegram_id,
-        name=user_in.name
-    )
+    user = User(telegram_id=user_in.telegram_id, name=user_in.name)
     db.add(user)
     await db.commit()
     return user

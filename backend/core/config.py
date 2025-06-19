@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     """
     Configuration settings for the application.
     """
+
     DEBUG: bool = False
 
     POSTGRES_USER: str
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     POSTGRES_HOST: str
     POSTGRES_PORT: int
-    
+
     INTERNAL_TOKEN: str
     OPENAI_API_KEY: str
 

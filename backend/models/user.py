@@ -11,7 +11,9 @@ class User(Base):
     name: Mapped[str]
     is_active: Mapped[bool] = mapped_column(default=False, index=True)
 
-    chats: Mapped[list["Chat"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    chats: Mapped[list["Chat"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
     created_at: Mapped[created_at]
     updated_at: Mapped[updated_at]

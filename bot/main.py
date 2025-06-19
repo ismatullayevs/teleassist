@@ -3,7 +3,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.mongo import MongoStorage
 from motor.motor_asyncio import AsyncIOMotorClient
-from core.config import settings
+from config import settings
 from handlers import router
 import asyncio
 import logging
@@ -11,7 +11,9 @@ import sys
 
 
 async def main():
-    bot = Bot(settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    bot = Bot(
+        settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
 
     mongo = AsyncIOMotorClient(
         host=settings.mongo_url,
