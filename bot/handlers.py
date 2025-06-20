@@ -135,5 +135,7 @@ async def handle_message(message: types.Message, state: FSMContext):
                         "content": answer.get("content", ""),
                     }
                 )
+            elif response.status == 429:
+                await msg.edit_text("You are already generating a response. Please wait.")
             else:
-                await message.answer("Failed to get a response from the server.")
+                await msg.edit_text("Failed to get a response from the server.")

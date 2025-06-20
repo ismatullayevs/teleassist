@@ -4,7 +4,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-        restart: true
     env_file:
       - .env
     command: sh prestart.sh
@@ -15,7 +14,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-        restart: true
       prestart:
         condition: service_completed_successfully
     env_file:
@@ -52,7 +50,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
-        restart: true
+      backend:
+        condition: service_started
     env_file:
       - .env
 

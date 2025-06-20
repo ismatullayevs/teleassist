@@ -17,6 +17,8 @@ class Settings(BaseSettings):
     INTERNAL_TOKEN: str
     OPENAI_API_KEY: str
 
+    OPENAI_MODEL: str
+
     @property
     def database_url(self) -> str:
         """
