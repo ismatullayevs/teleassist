@@ -1,9 +1,10 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
-from aiogram.fsm.context import FSMContext
-from aiogram import types
-from aioresponses import aioresponses
+
 import handlers
+import pytest
+from aiogram import types
+from aiogram.fsm.context import FSMContext
+from aioresponses import aioresponses
 
 
 @pytest.mark.asyncio

@@ -1,19 +1,23 @@
 import pytest
-from fastapi.testclient import TestClient
 from core.config import settings
-from models.user import User
+from fastapi.testclient import TestClient
 from models.chat import Chat
+from models.user import User
+
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("token,status_code", [
-    (settings.INTERNAL_TOKEN, 201),
-    ("invalid_token", 401),
-])
+@pytest.mark.parametrize(
+    "token,status_code",
+    [
+        (settings.INTERNAL_TOKEN, 201),
+        ("invalid_token", 401),
+    ],
+)
 async def test_create_chat(client: TestClient, session, token, status_code):
     user = User(telegram_id=111111, name="Chat User", is_active=True)
     session.add(user)
     await session.commit()
-    
+
     headers = {
         "X-Internal-Token": token,
         "X-Telegram-User-Id": str(user.telegram_id),
@@ -29,11 +33,16 @@ async def test_create_chat(client: TestClient, session, token, status_code):
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("token,expected_status", [
-    (settings.INTERNAL_TOKEN, 201),
-    ("invalid_token", 401),
-])
-async def test_generate_response(client: TestClient, session, monkeypatch, token, expected_status):
+@pytest.mark.parametrize(
+    "token,expected_status",
+    [
+        (settings.INTERNAL_TOKEN, 201),
+        ("invalid_token", 401),
+    ],
+)
+async def test_generate_response(
+    client: TestClient, session, monkeypatch, token, expected_status
+):
     user = User(telegram_id=333333, name="Chat User", is_active=True)
     chat = Chat(user=user)
     session.add(user)
@@ -41,10 +50,13 @@ async def test_generate_response(client: TestClient, session, monkeypatch, token
     await session.commit()
 
     from api.v1 import chat as chat_module
+
     class DummyResponse:
         output_text = "dummy response"
+
     async def dummy_create(*args, **kwargs):
         return DummyResponse()
+
     monkeypatch.setattr(chat_module.client.responses, "create", dummy_create)
 
     headers = {
@@ -72,6 +84,7 @@ async def test_generate_response_locked(client: TestClient, session, monkeypatch
     await session.commit()
 
     from api.v1 import chat as chat_module
+
     lock = chat_module.get_user_lock(str(user.id))
     await lock.acquire()
 

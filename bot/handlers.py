@@ -1,7 +1,7 @@
-from aiogram import Router, types, F
-from aiogram.fsm.context import FSMContext
-from aiogram.filters import CommandStart, Command
 import aiohttp
+from aiogram import F, Router, types
+from aiogram.filters import Command, CommandStart
+from aiogram.fsm.context import FSMContext
 from config import settings
 from mongo import client
 
@@ -64,6 +64,15 @@ async def command_new(message: types.Message, state: FSMContext):
     )
 
 
+@router.message(Command("help"))
+async def command_help(message: types.Message, state: FSMContext):
+    await message.answer(
+        "You can continue the conversation by simply sending messages.\n"
+        "To start a new chat, send /new.\n"
+        "To continue a previous conversation, reply to one of your earlier messages."
+    )
+
+
 @router.message(F.text)
 async def handle_message(message: types.Message, state: FSMContext):
     assert message.text and message.from_user
@@ -119,7 +128,7 @@ async def handle_message(message: types.Message, state: FSMContext):
 
         msg = await message.reply("Generating response...")
         async with session.post(
-            f"http://backend:80/api/v1/generate",
+            "http://backend:80/api/v1/generate",
             headers=headers,
             json={"chat_id": last_chat_id, "content": message.text},
         ) as response:
@@ -136,6 +145,8 @@ async def handle_message(message: types.Message, state: FSMContext):
                     }
                 )
             elif response.status == 429:
-                await msg.edit_text("You are already generating a response. Please wait.")
+                await msg.edit_text(
+                    "You are already generating a response. Please wait."
+                )
             else:
                 await msg.edit_text("Failed to get a response from the server.")

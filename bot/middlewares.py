@@ -1,5 +1,6 @@
-from aiogram import BaseMiddleware
 import logging
+
+from aiogram import BaseMiddleware
 
 
 class LoggingMiddleware(BaseMiddleware):

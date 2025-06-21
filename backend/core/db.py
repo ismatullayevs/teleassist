@@ -1,8 +1,7 @@
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-
 from core.config import settings
+from models import chat, user
 from models.base import Base
-from models import user, chat
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 engine = create_async_engine(settings.database_url, echo=settings.DEBUG)
 

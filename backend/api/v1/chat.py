@@ -1,16 +1,15 @@
+import asyncio
 from datetime import datetime, timezone
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import select, and_
-from openai import AsyncOpenAI
-import asyncio
 
-from api.dependencies import get_current_active_user, DbDep
+from api.dependencies import DbDep, get_current_active_user
 from core.config import settings
+from dto.chat import ChatOutDTO, MessageInDTO, MessageOutDTO
+from fastapi import APIRouter, Depends, HTTPException
 from models.chat import Chat, Message
 from models.user import User
-from dto.chat import ChatOutDTO, MessageInDTO, MessageOutDTO
-
+from openai import AsyncOpenAI
+from sqlalchemy import and_, select
 
 router = APIRouter()
 client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
@@ -69,9 +68,14 @@ async def generate_response(
             created_at=current_time,
             updated_at=current_time,
         )
+
+        with open("bot_instructions.txt", "r") as f:
+            instructions = f.read().strip()
+
         response = await client.responses.create(
             model=settings.OPENAI_MODEL,
             input=[
+                {"role": "system", "content": instructions},
                 *[{"role": msg.role.name, "content": msg.content} for msg in messages],
                 {"role": "user", "content": message.content},
             ],

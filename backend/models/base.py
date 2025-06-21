@@ -1,9 +1,9 @@
-from sqlalchemy import TIMESTAMP, func, text, MetaData
-from sqlalchemy.orm import mapped_column, DeclarativeBase
-from sqlalchemy.ext.asyncio import AsyncAttrs
-from typing import Annotated
 import datetime
+from typing import Annotated
 
+from sqlalchemy import TIMESTAMP, MetaData, func, text
+from sqlalchemy.ext.asyncio import AsyncAttrs
+from sqlalchemy.orm import DeclarativeBase, mapped_column
 
 intpk = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
 created_at = Annotated[

@@ -1,12 +1,11 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends
-from openai import OpenAI
 
-from api.dependencies import VerifiedTokenDep, DbDep, get_current_user
+from api.dependencies import DbDep, VerifiedTokenDep, get_current_user
 from core.config import settings
 from dto.user import UserInDTO, UserOutDTO
+from fastapi import APIRouter, Depends
 from models.user import User
-
+from openai import OpenAI
 
 router = APIRouter()
 client = OpenAI(api_key=settings.OPENAI_API_KEY)

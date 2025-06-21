@@ -1,10 +1,8 @@
-from sqlalchemy import ForeignKey
-from models.base import Base, intpk, created_at, updated_at
-from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy.orm import relationship
-
-from models.user import User
 from enumerators import Role
+from models.base import Base, created_at, intpk, updated_at
+from models.user import User
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class Chat(Base):

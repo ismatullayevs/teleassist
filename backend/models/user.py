@@ -1,6 +1,5 @@
-from models.base import Base, intpk, created_at, updated_at
-from sqlalchemy.orm import mapped_column, Mapped
-from sqlalchemy.orm import relationship
+from models.base import Base, created_at, intpk, updated_at
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class User(Base):

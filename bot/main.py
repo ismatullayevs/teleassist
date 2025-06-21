@@ -1,16 +1,18 @@
-from aiogram import Bot, Dispatcher
-from aiogram.methods import GetUpdates
-from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
-from aiogram.fsm.storage.mongo import MongoStorage
-from aiogram.client.session.middlewares.request_logging import RequestLogging
-from motor.motor_asyncio import AsyncIOMotorClient
-from config import settings
-from handlers import router
 import asyncio
 import logging
 import sys
+
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.client.session.middlewares.request_logging import RequestLogging
+from aiogram.enums import ParseMode
+from aiogram.fsm.storage.mongo import MongoStorage
+from aiogram.methods import GetUpdates, SetMyCommands
+from aiogram.types import BotCommand
+from config import settings
+from handlers import router
 from middlewares import LoggingMiddleware
+from motor.motor_asyncio import AsyncIOMotorClient
 
 
 async def main():
@@ -18,6 +20,17 @@ async def main():
         settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
     bot.session.middleware(RequestLogging(ignore_methods=[GetUpdates]))
+
+    # Set bot commands
+    await bot(
+        SetMyCommands(
+            commands=[
+                BotCommand(command="start", description="Start the bot"),
+                BotCommand(command="help", description="Show help information"),
+                BotCommand(command="new", description="Start a new chat"),
+            ]
+        )
+    )
 
     mongo = AsyncIOMotorClient(
         host=settings.mongo_url,

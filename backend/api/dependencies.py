@@ -1,13 +1,11 @@
 from typing import Annotated
+
+from core.config import settings
+from core.db import get_session
+from fastapi import Depends, Header, HTTPException
+from models.user import User
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from core.db import get_session
-from core.config import settings
-
-from fastapi import Depends, HTTPException, Header
-
-from models.user import User
-
 
 DbDep = Annotated[AsyncSession, Depends(get_session)]
 
