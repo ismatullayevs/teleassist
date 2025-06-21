@@ -7,7 +7,7 @@ class UserInDTO(BaseModel):
     name: str
 
 
-class UserOutDTO(BaseModel):
+class UserOutDTO(UserInDTO):
     id: int
     is_active: bool
     created_at: datetime

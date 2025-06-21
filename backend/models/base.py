@@ -1,4 +1,4 @@
-from sqlalchemy import TIMESTAMP, text, MetaData
+from sqlalchemy import TIMESTAMP, func, text, MetaData
 from sqlalchemy.orm import mapped_column, DeclarativeBase
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from typing import Annotated
@@ -9,15 +9,15 @@ intpk = Annotated[int, mapped_column(primary_key=True, autoincrement=True)]
 created_at = Annotated[
     datetime.datetime,
     mapped_column(
-        server_default=text("TIMEZONE('utc', now())"),
+        server_default=func.now(),
         type_=TIMESTAMP(timezone=True),
     ),
 ]
 updated_at = Annotated[
     datetime.datetime,
     mapped_column(
-        server_default=text("TIMEZONE('utc', now())"),
-        onupdate=lambda: datetime.datetime.now(datetime.timezone.utc),
+        server_default=func.now(),
+        server_onupdate=func.now(),
         type_=TIMESTAMP(timezone=True),
     ),
 ]
