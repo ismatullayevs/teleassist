@@ -39,7 +39,7 @@ async def get_current_user(
         and x_telegram_user_id
         and x_internal_token == settings.INTERNAL_TOKEN
     ):
-        query = select(User).where(User.telegram_id == x_telegram_user_id)
+        query = select(User).where(User.telegram_id == int(x_telegram_user_id))
         result = await db.scalars(query)
         user = result.one_or_none()
         if not user:

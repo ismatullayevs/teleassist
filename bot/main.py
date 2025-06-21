@@ -21,7 +21,6 @@ async def main():
     )
     bot.session.middleware(RequestLogging(ignore_methods=[GetUpdates]))
 
-    # Set bot commands
     await bot(
         SetMyCommands(
             commands=[
